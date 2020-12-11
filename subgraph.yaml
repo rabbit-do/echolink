@@ -1,0 +1,35 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Contract
+    network: mainnet
+    source:
+      address: "0xa6a840e50bcaa50da017b91a0d86b8b2d41156ee"
+      abi: Contract
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Issue
+        - SaleSucceeded
+        - SaleFailed
+        - Approval
+        - Transfer
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: Issue(uint256,address,uint256)
+          handler: handleIssue
+        - event: SaleSucceeded()
+          handler: handleSaleSucceeded
+        - event: SaleFailed()
+          handler: handleSaleFailed
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts
